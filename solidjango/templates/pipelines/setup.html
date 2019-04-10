@@ -1,0 +1,46 @@
+<h1>{{ pipeline_id }}</h1>
+<form action="deploy/" method="post">{% csrf_token %}
+    <table>
+        <tr>
+            <td>Project name:</td>
+            <td><input type="text" id="project_name" name="project_name" placeholder="{{ profile.project_name }}"
+                       value="{{ profile.project_name }}"></td>
+        </tr>
+        <tr>
+            <td>Project Email Address:</td>
+            <td><input type="text" id="project_email_address" name="project_email_address"
+                       placeholder="{{ profile.project_email_address }}" value="{{ profile.project_email_address }}"></td>
+        </tr>
+        <tr>
+            <td>Project Dir:</td>
+            <td><input type="text" id="project_dir" name="project_dir"
+                       placeholder="{{ profile.project_dir }}" value="{{ profile.project_dir }}"></td>
+        </tr>
+        <tr>
+            <td>Tmp Dir:</td>
+            <td><input type="text" id="tmp_dir" name="tmp_dir"
+                       placeholder="{{ profile.tmp_dir }}" value="{{ profile.tmp_dir }}"></td>
+        </tr>
+
+    </table>
+    <table>
+        <tr>
+            <td>Host:</td>
+            <td><input type="text" id="host" name="host" placeholder="{{ remote.host }}"
+                       value="{{ remote.host}}"></td>
+        </tr>
+        <tr>
+            <td>User:</td>
+            <td><input type="text" id="remote_user" name="remote_user" placeholder="{{ remote.remote_user }}"
+                       value="{{ remote.remote_user}}"></td>
+        </tr>
+        <tr>
+            <td>Connection:</td>
+            <td><input type="text" id="connection" name="connection" placeholder="{{ remote.connection }}"
+                       value="{{ remote.connection}}"></td>
+        </tr>
+
+
+    </table>
+    <input type="submit" value="Deploy">
+</form>

@@ -1,0 +1,8 @@
+<ul>
+    {% for k,v in pipelines_list.items %}
+        <li>
+            <h1><a href="/pipelines/{{ v.label }}/">{{ v.label }}</a></h1>
+            ({{ v.description }})
+        </li>
+    {% endfor %}
+</ul>

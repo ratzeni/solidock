@@ -1,0 +1,30 @@
+<h1>{{ pipeline.label }}</h1>
+<h3>{{ pipeline.description }}</h3>
+
+<table>
+    <tr>
+        <td>url:</td>
+        <td>{{ pipeline.url }}</td>
+    </tr>
+    <tr>
+        <td>type:</td>
+        <td>{{ pipeline.type }}</td>
+    </tr>
+    <tr>
+        <td>playbook:</td>
+        <td>{{ pipeline.playbook }}</td>
+    </tr>
+</table>
+
+<hr>
+<form action="setup/" method="post">{% csrf_token %}
+    <table>
+    {% for k,v in pipeline.playbook_vars_template.items %}
+        <tr>
+            <td>{{ k }}:</td>
+            <td><input type="text" id="{{ k }}" name="{{ k }}" placeholder="{{ v }}" value="{{ v }}"></td>
+        </tr>
+    {% endfor %}
+    </table>
+    <input type="submit" value="Setup">
+</form>

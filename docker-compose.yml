@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+  db:
+    image: postgres
+  web:
+    build: .
+    command: >
+      bash -c "apt-get update && apt-get install -y rsync
+      && solida info
+      && python solidjango/manage.py migrate --noinput
+      && python solidjango/manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - .:/code
+      - ~/.ssh:/root/.ssh:ro
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+
