@@ -6,15 +6,24 @@ services:
   web:
     build: .
     command: >
-      bash -c "apt-get update && apt-get install -y rsync
-      && solida info
-      && python solidjango/manage.py migrate --noinput
-      && python solidjango/manage.py runserver 0.0.0.0:8000"
+      bash -c "sh start_django.sh"
     volumes:
       - .:/code
       - ~/.ssh:/root/.ssh:ro
+      - /private/tmp:/private/tmp/
     ports:
       - "8000:8000"
     depends_on:
       - db
+  gui:
+    build: .
+    command: >
+        bash -c "sh start_electron.sh"
+    environment:
+      - DISPLAY:$DISPLAY
+    volumes:
+      - .:/code
+      - ~/.Xauthority:/root/.Xauthority:rw
+    depends_on:
+      - web
 

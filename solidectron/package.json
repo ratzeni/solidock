@@ -1,0 +1,22 @@
+{
+  "name": "solidectron",
+  "version": "1.0.0",
+  "description": "A minimal Electron application",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": "",
+  "keywords": [
+    "Electron",
+    "solida",
+    "django",
+    "tutorial",
+    "demo"
+  ],
+  "author": "Ratzeni",
+  "license": "CC0-1.0",
+  "devDependencies": {
+    "electron": "4.1.3"
+  }
+}

@@ -1,7 +1,11 @@
 from django.http import HttpResponse
 from django.template import loader, RequestContext
 
+from django.views.generic.base import TemplateView
+
 from django.conf import settings
+
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 from utils.adjustment import ConfigurationFromYamlFile, YamlFileEditor
 from utils.launcher import Launcher
@@ -12,16 +16,33 @@ conf = ConfigurationFromYamlFile(settings.SOLIDA_CONFIG_FILE)
 s_conf = conf.get_pipelines_section()
 
 
-def index(request):
-    template = loader.get_template('pipelines/index.html')
-    context = dict(pipelines_list=s_conf)
-    return HttpResponse(template.render(context, request))
+class IndexView(TemplateView):
+    template_name = 'pipelines/index.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(IndexView, self).get_context_data(**kwargs)
+        pipelines = [v for k, v in s_conf.items()]
+        paginator = Paginator(pipelines, 5)
+        page = self.request.GET.get("page")
+        try:
+            show_pipelines = paginator.page(page)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver first page.
+            show_pipelines = paginator.page(1)
+        except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver last page of results.
+            show_pipelines = paginator.page(paginator.num_pages)
+        context["pipelines_list"] = show_pipelines
+        return context
 
 
-def details(request, pipeline_id):
-    template = loader.get_template('pipelines/details.html')
-    context = dict(pipeline=s_conf.get(pipeline_id))
-    return HttpResponse(template.render(context, request))
+class DetailsView(TemplateView):
+    template_name = 'pipelines/details.html'
+
+    def get_context_data(self, pipeline_id, **kwargs):
+        context = super(DetailsView, self).get_context_data(**kwargs)
+        context['pipeline'] = s_conf.get(pipeline_id)
+        return context
 
 
 def setup(request, pipeline_id):

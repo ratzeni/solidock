@@ -1,8 +1,37 @@
-<ul>
-    {% for k,v in pipelines_list.items %}
-        <li>
-            <h1><a href="/pipelines/{{ v.label }}/">{{ v.label }}</a></h1>
-            ({{ v.description }})
-        </li>
-    {% endfor %}
-</ul>
+{% extends 'pipelines/base.html' %}
+
+{% load bootstrap4 %}
+
+{% block content %}
+<div class="card">
+  <div class="card-header">
+    Pipelines
+  </div>
+  <div class="card-body">
+        <div class="col-sm-12 controls" style="margin-top:10px;">
+            <table class="table table-striped table-hover table-responsive">
+                <thead>
+                <tr class="bg-success text-light">
+                    <th>Label</th>
+                    <th>Description</th>
+                    <th>Source</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for p in pipelines_list %}
+                <tr>
+                    <td><a href="/pipelines/{{ p.label }}/">{{ p.label }}</a></td>
+                    <td>{{ p.description }}
+                    <td><a href="{{p.url}}">{{ p.url }}</a></td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <div class="col-sm-12 controls" style="margin-top:10px;">
+                <div class="pull-right">{% bootstrap_pagination pipelines_list url="/pipelines?page=1" size="small" %}</div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
